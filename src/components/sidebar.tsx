@@ -17,11 +17,13 @@ import {
   Settings,
   Building2,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  CheckSquare
 } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Tasks', href: '/tasks', icon: CheckSquare },
   { name: 'Customers', href: '/customers', icon: Users },
   { name: 'Calls', href: '/calls', icon: Phone },
   { name: 'Emails', href: '/emails', icon: Mail },

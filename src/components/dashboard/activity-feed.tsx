@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { AnimatedContainer } from '@/components/animated-container'
 import { Clock, User, Phone, Mail, Calendar } from 'lucide-react'
 
 const activities = [
@@ -52,7 +53,12 @@ export function ActivityFeed() {
         <CardTitle>Recent Activity</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <AnimatedContainer 
+          className="space-y-4"
+          delay={0.3}
+          staggerChildren={0.08}
+          direction="right"
+        >
           {activities.map((activity) => {
             const Icon = activity.icon
             return (
@@ -79,7 +85,7 @@ export function ActivityFeed() {
               </div>
             )
           })}
-        </div>
+        </AnimatedContainer>
       </CardContent>
     </Card>
   )

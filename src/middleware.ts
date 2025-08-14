@@ -1,22 +1,48 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-const isProtectedRoute = createRouteMatcher([
+const protectedRoutes = [
+  '/dashboard',
+  '/customers',
+  '/companies',
+  '/calls',
+  '/emails',
+  '/calendar',
+  '/analytics',
+  '/settings',
+  '/api/users'
+]
+
+const publicRoutes = [
   '/',
-  '/customers(.*)',
-  '/companies(.*)',
-  '/calls(.*)',
-  '/emails(.*)',
-  '/calendar(.*)',
-  '/analytics(.*)',
-  '/settings(.*)',
-  '/api/users(.*)'
-])
+  '/sign-in',
+  '/sign-up',
+  '/api/auth'
+]
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect()
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Allow public routes and API auth routes
+  if (publicRoutes.some(route => pathname.startsWith(route))) {
+    return NextResponse.next()
   }
-})
+
+  // Check if route is protected
+  const isProtectedRoute = protectedRoutes.some(route =>
+    pathname === route || pathname.startsWith(route + '/')
+  )
+
+  if (isProtectedRoute) {
+    // Check for session token in cookies
+    const sessionToken = request.cookies.get('better-auth.session_token')?.value
+
+    if (!sessionToken) {
+      return NextResponse.redirect(new URL('/sign-in', request.url))
+    }
+  }
+
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [

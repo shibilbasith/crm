@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { AnimatedContainer } from '@/components/animated-container'
 
 const customers = [
   {
@@ -47,7 +48,12 @@ export function RecentCustomers() {
         <CardTitle>Recent Customers</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <AnimatedContainer 
+          className="space-y-4"
+          delay={0.3}
+          staggerChildren={0.08}
+          direction="left"
+        >
           {customers.map((customer) => (
             <div key={customer.id} className="flex items-center space-x-4">
               <Avatar>
@@ -78,7 +84,7 @@ export function RecentCustomers() {
               </div>
             </div>
           ))}
-        </div>
+        </AnimatedContainer>
       </CardContent>
     </Card>
   )

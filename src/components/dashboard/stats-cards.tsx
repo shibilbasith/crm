@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { AnimatedContainer } from '@/components/animated-container'
 import { TrendingUp, TrendingDown, Users, DollarSign, Target, Phone } from 'lucide-react'
 
 const stats = [
@@ -35,7 +36,11 @@ const stats = [
 
 export function StatsCards() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <AnimatedContainer
+      className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+      delay={0.1}
+      staggerChildren={0.1}
+    >
       {stats.map((stat) => {
         const Icon = stat.icon
         return (
@@ -63,6 +68,6 @@ export function StatsCards() {
           </Card>
         )
       })}
-    </div>
+    </AnimatedContainer>
   )
 }

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { SidebarProvider } from "@/contexts/sidebar-context";
-import { ClerkProvider } from '@clerk/nextjs';
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,25 +27,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
+      >
+        <NextThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <NextThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ThemeProvider>
-              <SidebarProvider>
-                {children}
-              </SidebarProvider>
-            </ThemeProvider>
-          </NextThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          <ThemeProvider>
+            <SidebarProvider>
+              {children}
+              <Toaster />
+            </SidebarProvider>
+          </ThemeProvider>
+        </NextThemeProvider>
+      </body>
+    </html>
   );
 }

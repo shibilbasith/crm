@@ -1,28 +1,43 @@
+'use client'
+
 import { StatsCards } from '@/components/dashboard/stats-cards'
 import { RecentCustomers } from '@/components/dashboard/recent-customers'
 import { ActivityFeed } from '@/components/dashboard/activity-feed'
+import { DashboardCharts } from '@/components/dashboard/charts'
 import { LayoutWrapper } from '@/components/layout-wrapper'
+import { BeautifulLanding } from '@/components/ui/beautiful-landing'
+import { useSession } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
-export default function Dashboard() {
-  return (
-    <LayoutWrapper>
-      <div className="p-4 md:p-6 space-y-4 md:space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-            <p className="text-muted-foreground">
-              Welcome back! Here's what's happening with your business today.
-            </p>
-          </div>
-        </div>
+export default function HomePage() {
+  const { data: session, isPending } = useSession()
+  const router = useRouter()
 
-        <StatsCards />
+  // If user is authenticated, redirect to dashboard
+  useEffect(() => {
+    if (!isPending && session) {
+      router.push('/dashboard')
+    }
+  }, [session, isPending, router])
 
-        <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
-          <RecentCustomers />
-          <ActivityFeed />
-        </div>
+  if (isPending) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
       </div>
-    </LayoutWrapper>
-  )
+    )
+  }
+
+  // If user is authenticated, show loading while redirecting
+  if (session) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    )
+  }
+
+  // Show landing page for unauthenticated users
+  return <BeautifulLanding />
 }
